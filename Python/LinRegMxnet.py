@@ -1,5 +1,5 @@
 '''
-Implement Linear Regression using Mxnet?Gluon Framework
+Implement Linear Regression using Mxnet and Gluon Framework
 
 Author: Jianhong Chen
 Date: 06.28.2021

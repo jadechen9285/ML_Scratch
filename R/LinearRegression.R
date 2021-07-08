@@ -18,10 +18,10 @@ SyntheticData = function(w, num_examples){
   # NOTE set row-wise here to match with Python rowwise notation
   X = matrix(rnorm(num_examples * length(w), mean = 0, sd = 1),
              nrow = num_examples, ncol = length(w), byrow = TRUE)
-  # set the first column into 1 for the intercept parameter
+  # # set the first column into 1 for the intercept parameter
   X[, 1] = 1
 
-  y = X %*% w  # matrix multiplication 
+  y = X %*% w   # matrix multiplication 
   y = y + rnorm(nrow(y), mean = 0, sd = 0.01) # add some noise
   
   ret = data.frame(y, X)
@@ -33,7 +33,7 @@ SyntheticData = function(w, num_examples){
 LinReg = function(X, w){
   ## Linear Regression equation
   ## The intercept param, b,  is embedded into w as the first parameter!!!
-  ret = X %*% w
+  ret = X %*% w 
   return(ret)
 }
 
@@ -51,8 +51,8 @@ SGD = function(X, y, w, lr, batch_size){
   X_batch = X[batch_ind, ]
   y_batch = y[batch_ind, ]
   # Compute gradient for the batch sample:
-  w_grad = matrix( (LinReg(X_batch, w) - y_batch), nrow = 1 ) # reshape for matrix operation 
-  w_grad = matrix(w_grad %*% X_batch, ncol = 1) # reshape to col-vector
+  w_grad = t((LinReg(X_batch, w) - y_batch)) # transpose col-vector to row-vector
+  w_grad = t(w_grad %*% X_batch) # transpose back to col-vector
 
   # Now update w & b
   w = w - lr/batch_size * w_grad
@@ -66,7 +66,8 @@ SGD = function(X, y, w, lr, batch_size){
 
 ## True parameters:
 # note: the first parameter in w is the intercept
-true_w = matrix(c(4.2, 2, -3.4), ncol = 1)
+true_b = 4.2
+true_w = matrix(c(true_b, 2, -3.4), ncol = 1)
 num_examples = 1000
 
 dat = SyntheticData(true_w,  num_examples)
